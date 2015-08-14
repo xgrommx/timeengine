@@ -12,8 +12,12 @@
   __.t = __.computeTimeout(f, 0);
   __.t = __.computeTimeout(f, 1000);
 
-  ///------------------------
-
+  //------------------------
+  var f0 = () => {
+    __.t = __.log('--------------------------------------------');
+  };
+  __.t = __.computeTimeout(f0, 1500);
+  //------------------------
   var a = __.stream();
   var b = __.stream();
   var c = __.stream();
@@ -51,15 +55,26 @@
   __.t = __.computeTimeout(f1, 2000);
 
   var f2 = () => {
-    __.t = __.log('---------------------- 2500 ----------------------');
+    __.t = __.log('--------------------------------------------');
   };
   __.t = __.computeTimeout(f2, 2500);
 
   var f3 = () => {
-    b.t = 5;
+    //b.t = 5; // comment out, dependency Error occures
+
+    //since b.t depends on a, this is an illegal operation,
   };
   __.t = __.computeTimeout(f3, 3000);
 
+  var f4 = () => {
+    a.t = 5; // new update(discoverly on the timeline stream)
+  };
+  __.t = __.computeTimeout(f4, 3500);
+  //---------------------------------------------
+  var f5 = () => {
+    __.t = __.log('--------------------------------------------');
+  };
+  __.t = __.computeTimeout(f5, 4000);
   //---------------------------------------------
 
   var m = __.stream();
@@ -86,22 +101,27 @@
 
   p.t = __.sync([m, n, o], () => 'Promised');
 
-  var f4 = () => {
+  var f6 = () => {
     m.t = 'some';
   };
-  __.t = __.computeTimeout(f4, 5000);
+  __.t = __.computeTimeout(f6, 5000);
 
-  var f5 = () => {
+  var f7 = () => {
     n.t = 'time';
   };
-  __.t = __.computeTimeout(f5, 5500);
+  __.t = __.computeTimeout(f7, 5500);
 
-  var f6 = () => {
+  var f8 = () => {
     o.t = 'other';
   };
-  __.t = __.computeTimeout(f6, 6000);
+  __.t = __.computeTimeout(f8, 6000);
 
-  ///-----------------------------------------------
+  //---------------------------------------------
+  var f9 = () => {
+    __.t = __.log('--------------------------------------------');
+  };
+  __.t = __.computeTimeout(f9, 7000);
+  //---------------------------------------------
 
   var f99 = () => {
     __.t = __.log('Any Event Function can be wrapped.');

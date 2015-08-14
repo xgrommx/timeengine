@@ -27,7 +27,6 @@
     return f;
   };
 
-
   timestream.wrap = (legacyF) => {
     var f = (...args) => {
       var wrappedF = () => {
@@ -70,10 +69,8 @@
 
     stream.isUpdated = false;
 
-    //!!!!!!!!!!!!!!!!!
     stream.syncStreams = [];
     stream.referredStreams = [];
-    //!!!!!!!!!!!!!!!!!
 
     Object.defineProperties(stream, //detect t update on each streams
       {
@@ -83,33 +80,12 @@
           },
           set(valOrEqF) { //foo.t is set
             if (!valOrEqF.synctimestream) {
-
-              var checkErrorF = () => {
-                if (stream.syncStreams.length === 0) {
-                  return false;
-                } else {
-                  var flag = false;
-                  stream.syncStreams.map((syncStream) => {
-                    if (syncStream.isUpdated === false) {
-                      flag = true; //no functional library here
-                    }
-                  });
-                  return flag;
-                }
-              };
-
-              if (checkErrorF() === true) {
-                throw new Error("the value depends on another value");
-              } else {
+              var ff = () => {
                 valOnT = valOrEqF;
-
-                //----fill other stream's key true------------
                 log('valOnT set!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-
                 log(valOnT);
                 stream.isUpdated = true;
                 log(stream);
-
                 //propagate ======================================
                 stream.referredStreams.map((referredStream) => {
 
@@ -131,30 +107,55 @@
                     && (checkF() === true))
                   // the referredStream's all syncStream.isUpdated === true
                   {
-
                     log('************ the referredStreams all syncStream.isUpdated === true******************');
                     referredStream.t = referredStream.eqF();
-
                   }
-
                 });
-
                 //finally do own task-----------------
-
                 computingF
                   .map((f) => {
                     f(valOnT);
                   });
+              };
 
+              if (stream.isUpdated === false) {
+                ff(); //library internal updated, keep going
+              } else {
+                log('@@@@@@@@@@@    stream.isUpdated === true    @@@@@@@@@@');
+                // can be proper new update cycle, can be illegal
+
+                var dependencyErrorCheck = () => {
+                  if (stream.syncStreams.length === 0) {
+                    return false;
+                  } else {
+                    return true;
+                  }
+                };
+
+                if (dependencyErrorCheck() === true) {
+                  throw new Error("the value depends on another value");
+                } else {
+                  var clearUpdatedFlag = () => {
+                    stream.referredStreams.map((referredStream) => {
+                      referredStream.isUpdated = false;
+                      referredStream.syncStreams.map((syncStream) => {
+                        syncStream.isUpdated = false;
+                      });
+                    });
+                  };
+
+                  clearUpdatedFlag();
+                  ff(); //manual updated new cycle
+                }
               }
 
             //======================================
             } else {
               stream.isUpdated = false;
+
+              //retain the equationF
+              stream.eqF = valOrEqF.synctimestream.equation;
               //obtain own stream.syncStreams on = triggered
-
-              stream.eqF = valOrEqF.synctimestream.equation; //retain the equationF
-
               stream.syncStreams = valOrEqF.synctimestream.syncStreams;
 
               stream.syncStreams.map((syncStream) => {
@@ -190,9 +191,7 @@
     return stream;
   };
 
-
   //--------
-
 
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = timestream;

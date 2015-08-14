@@ -4,7 +4,7 @@
   "description": "Time Engine is the True Functional Reactive Programming Library from the Point of View of Physics, our World and Time",
   "main": "timeengine.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "babel timeengine.jsx -o timeengine.js; babel-node test.jsx"
   },
   "repository": {
     "type": "git",
