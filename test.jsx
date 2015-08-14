@@ -109,7 +109,6 @@
     __.t = __.log('p', p.t);
   });
 
-
   p.t = __.sync([m, n, o], () => 'Promised');
 
   var f6 = () => {
