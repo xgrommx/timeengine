@@ -1,0 +1,26 @@
+{
+  "name": "timeengine",
+  "version": "1.0.0",
+  "description": "Time Engine is the True Functional Reactive Programming Library from the Point of View of Physics, our World and Time",
+  "main": "timeengine.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kenokabe/timeengine.git"
+  },
+  "keywords": [
+    "FRP",
+    "functional",
+    "reactive",
+    "time",
+    "stream"
+  ],
+  "author": "Ken Okabe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kenokabe/timeengine/issues"
+  },
+  "homepage": "https://github.com/kenokabe/timeengine#readme"
+}
