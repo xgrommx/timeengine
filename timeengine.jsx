@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  var util = require('util'); //debug
+  //  var util = require('util'); //debug
   var log = (obj) => {
     //  console.log(util.inspect(obj, false, null));
   };
@@ -40,8 +40,6 @@
 
   timestream.computeInterval = timestream.wrap(setInterval);
   timestream.computeTimeout = timestream.wrap(setTimeout);
-
-
 
   timestream.sync = (syncStreams, equation) => {
 
